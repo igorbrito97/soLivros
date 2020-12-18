@@ -1,24 +1,21 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity, Image, Text } from 'react-native';
+import { BotaoLivro, Imagem, LivroAutor, LivroNome } from './styles';
 
 const Livro = () => {
     const navigation = useNavigation();
     return (
-        <TouchableOpacity
-            style={{ flex: 1, margin: 8, backgroundColor: '#fff' }}
+        <BotaoLivro
             onPress={() => { navigation.navigate('DetalheLivro'); }}
         >
-            <Image
-                style={{ height: 256, width: '100%' }}
+            <Imagem
                 resizeMode="cover"
                 source={require('../../assets/202852714dec217e579db202a977be70.jpg')}
             />
-            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Livro</Text>
-            <Text style={{ color: '#aaa', fontSize: 14 }}>Autor</Text>
-        </TouchableOpacity>
+            <LivroNome>Livro</LivroNome>
+            <LivroAutor>Autor</LivroAutor>
+        </BotaoLivro>
     );
 };
 
