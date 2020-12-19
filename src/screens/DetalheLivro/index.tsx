@@ -1,10 +1,12 @@
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { buscaDetalheLivro } from '../../services/Livro';
 import {
     AutorLivro,
     Container,
@@ -19,32 +21,59 @@ import {
     BotaoVoltar,
 } from './styles';
 
+interface DetalheLivroDTO {
+    id: number;
+    nome: string;
+    autor: string;
+    descricao: string;
+    imagem: string;
+}
+
 const DetalheLivro = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const livroId = route.params.livroId;
+    const [livro, setLIvro] = useState<DetalheLivroDTO | null>(null);
+
+    useEffect(() => {
+        const carregaDetalheLivro = async () => {
+            const response = await buscaDetalheLivro(livroId);
+            const json = await response.json();
+            setLIvro(json);
+        }
+        carregaDetalheLivro();
+    }, [livroId]);
+
+    console.log('livro', livro);
     return (
         <>
             <StatusBar barStyle="dark-content" backgroundColor='#E7F5F8' />
             <Container>
-                <ScrollView style={{ flex: 1 }}>
-                    <ContainerLivro>
-                        <BotaoVoltar onPress={() => navigation.goBack()}>
-                            <Icon name="arrow-left" size={24} color="#000" />
-                        </BotaoVoltar>
-                        <Imagem
-                            resizeMode="contain"
-                            source={require('../../assets/202852714dec217e579db202a977be70.jpg')}
-                        />
-                        <NomeLivro>Livro</NomeLivro>
-                        <AutorLivro>Autor</AutorLivro>
-                    </ContainerLivro>
-                    <ContainerDescricao>
-                        <TextoDescricao>Descrição</TextoDescricao>
-                        <TextoDescricaoDetalhes>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus tincidunt eros, dignissim laoreet neque mattis non. Nullam cursus sed nulla in cursus. Maecenas vitae dapibus tortor.</TextoDescricaoDetalhes>
-                    </ContainerDescricao>
-                </ScrollView>
-                <BotaoFavorito>
-                    <TextoBotao >Adicionar aos favoritos</TextoBotao>
-                </BotaoFavorito>
+                {!!livro ? (
+                    <>
+                        <ScrollView style={{ flex: 1 }}>
+                            <ContainerLivro>
+                                <BotaoVoltar onPress={() => navigation.goBack()}>
+                                    <Icon name="arrow-left" size={24} color="#000" />
+                                </BotaoVoltar>
+                                <Imagem
+                                    resizeMode="contain"
+                                    source={{ uri: livro.imagem }}
+                                />
+                                <NomeLivro>{livro.nome}</NomeLivro>
+                                <AutorLivro>{livro.autor}</AutorLivro>
+                            </ContainerLivro>
+                            <ContainerDescricao>
+                                <TextoDescricao>Descrição</TextoDescricao>
+                                <TextoDescricaoDetalhes>{livro.descricao}</TextoDescricaoDetalhes>
+                            </ContainerDescricao>
+                        </ScrollView>
+                        <BotaoFavorito>
+                            <TextoBotao >Adicionar aos favoritos</TextoBotao>
+                        </BotaoFavorito>
+                    </>
+                ) : <ActivityIndicator size={42} color='#023E8A' />
+                }
             </Container>
         </>
     );
