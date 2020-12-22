@@ -1,7 +1,6 @@
-/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable react-native/no-inline-styles */
-
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StatusBar } from 'react-native';
@@ -40,14 +39,14 @@ const DetalheLivro = () => {
             const response = await buscaDetalheLivro(livroId);
             const json = await response.json();
             setLIvro(json);
-        }
+        };
         carregaDetalheLivro();
     }, [livroId]);
 
     console.log('livro', livro);
     return (
         <>
-            <StatusBar barStyle="dark-content" backgroundColor='#E7F5F8' />
+            <StatusBar barStyle="dark-content" backgroundColor="#E7F5F8" />
             <Container>
                 {!!livro ? (
                     <>
@@ -72,7 +71,7 @@ const DetalheLivro = () => {
                             <TextoBotao >Adicionar aos favoritos</TextoBotao>
                         </BotaoFavorito>
                     </>
-                ) : <ActivityIndicator size={42} color='#023E8A' />
+                ) : <ActivityIndicator size={42} color="#023E8A" />
                 }
             </Container>
         </>
