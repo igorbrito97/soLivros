@@ -4,8 +4,29 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
     flex: 1;
     background-color: #fff;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    padding: 16px;
+`;
+
+export const ImageContainer = styled.View`
+    flex: 1;
+    width: 100%;
+    align-items: center;
+    margin-top: 40px;
+`;
+
+export const InputContainer = styled.View`
+    flex: 1;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+`;
+
+export const TitleText = styled.Text`
+    font-size: 45;
+    color: #023E8A;
+    font-weight: bold
 `;
 
 export const Input = styled.TextInput`
