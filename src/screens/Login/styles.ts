@@ -24,7 +24,7 @@ export const InputContainer = styled.View`
 `;
 
 export const TitleText = styled.Text`
-    font-size: 45;
+    font-size: 45px;
     color: #023E8A;
     font-weight: bold
 `;

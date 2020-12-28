@@ -2,13 +2,16 @@
 /* eslint-disable curly */
 import React, { useState } from 'react';
 import { Image, Alert } from 'react-native';
+import { useAuth } from '../../context/auth';
 import { Container, Input, TextButton, RegisterButton, InputContainer, ImageContainer, TitleText } from './styles';
+
 
 const Cadastro: React.FC = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const { register } = useAuth();
 
     const handleRegister = () => {
         if (name.trim() === '')
@@ -24,7 +27,8 @@ const Cadastro: React.FC = () => {
         else if (password !== confirmPassword)
             Alert.alert('Erro!!', 'As duas senhas devem ser iguais!');
         else {
-
+            console.log('registrando');
+            register(name, email, password);
         }
     };
 
