@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable curly */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable react-native/no-inline-styles */
@@ -7,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StatusBar, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useAuth } from '../../context/auth';
+import { DesfavoritarLivro, FavoritarLivro } from '../../services/Favorito';
 import { buscaDetalheLivro } from '../../services/Livro';
 import {
     AutorLivro,
@@ -17,8 +19,10 @@ import {
     ContainerDescricao,
     TextoDescricao,
     TextoDescricaoDetalhes,
-    BotaoFavorito,
-    TextoBotao,
+    BotaoFavoritar,
+    TextoBotaoFavoritar,
+    BotaoDesfavoritar,
+    TextoBotaoDesfavoritar,
     BotaoVoltar,
 } from './styles';
 
@@ -33,9 +37,13 @@ interface DetalheLivroDTO {
 const DetalheLivro = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const livroId = route.params.livroId;
-    const [livro, setLIvro] = useState<DetalheLivroDTO | null>(null);
     const { token } = useAuth();
+
+    const [livro, setLIvro] = useState<DetalheLivroDTO | null>(null);
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const livroId = route.params.livroId;
+    const paramsIsFavorite = route.params.isFavorite;
 
     useEffect(() => {
         const carregaDetalheLivro = async () => {
@@ -50,7 +58,32 @@ const DetalheLivro = () => {
         carregaDetalheLivro();
     }, [livroId]);
 
-    console.log('livro', livro);
+    useEffect(() => {
+        setIsFavorite(paramsIsFavorite);
+    }, [paramsIsFavorite]);
+
+    const handleFavoriteClick = async () => {
+        console.log('handlinggggggggggggggg', isFavorite);
+        if (isFavorite) {
+            const response = await DesfavoritarLivro(livroId, token);
+            console.log('RESONSE', response);
+            if (response.success) {
+                setIsFavorite(!isFavorite);
+                ToastAndroid.show('Livro desfavoritado com sucesso!', ToastAndroid.SHORT);
+            }
+        }
+        else {
+            const response = await FavoritarLivro(livroId, token);
+            console.log('RESONSE', response);
+            if (response.success) {
+                setIsFavorite(!isFavorite);
+                ToastAndroid.show('Livro favoritado com sucesso!', ToastAndroid.SHORT);
+            }
+        }
+
+    };
+
+    //console.log('livro', livro);
     return (
         <>
             <StatusBar barStyle="dark-content" backgroundColor="#E7F5F8" />
@@ -74,9 +107,16 @@ const DetalheLivro = () => {
                                 <TextoDescricaoDetalhes>{livro.descricao}</TextoDescricaoDetalhes>
                             </ContainerDescricao>
                         </ScrollView>
-                        <BotaoFavorito>
-                            <TextoBotao>Adicionar aos favoritos</TextoBotao>
-                        </BotaoFavorito>
+                        {
+                            isFavorite ?
+                                <BotaoDesfavoritar onPress={handleFavoriteClick}>
+                                    <TextoBotaoDesfavoritar>Remover dos favoritos</TextoBotaoDesfavoritar>
+                                </BotaoDesfavoritar>
+                                :
+                                <BotaoFavoritar onPress={handleFavoriteClick}>
+                                    <TextoBotaoFavoritar>Adicionar aos favoritos</TextoBotaoFavoritar>
+                                </BotaoFavoritar>
+                        }
                     </>
                 ) : <ActivityIndicator size={42} color="#023E8A" />
                 }

@@ -6,14 +6,20 @@ import { ListaLivrosDTO } from '../../screens/ListaLivros';
 
 export interface LivroProps {
     data: ListaLivrosDTO;
+    isFavorite: boolean;
 }
 
 const Livro = (props: LivroProps) => {
     const navigation = useNavigation();
-    console.log('props', props);
+    //console.log('props', props);
     return (
         <BotaoLivro
-            onPress={() => { navigation.navigate('DetalheLivro', { livroId: props.data.id }); }}
+            onPress={() => {
+                navigation.navigate('DetalheLivro', {
+                    livroId: props.data.id,
+                    isFavorite: props.isFavorite,
+                });
+            }}
         >
             <Imagem
                 resizeMode="cover"

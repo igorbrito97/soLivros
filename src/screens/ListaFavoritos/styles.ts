@@ -21,4 +21,5 @@ export const UsuarioText = styled.Text`
 export const FavoritoText = styled.Text`
     font-size: 16px;
     font-weight: bold;
+    margin-bottom: 10px;
 `;

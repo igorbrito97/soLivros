@@ -12,7 +12,6 @@ export const buscaLivros = async (token: string) => {
 };
 
 export const buscaDetalheLivro = async (livroId: number, token: string) => {
-    console.log(livroId, token);
     const response = await fetch('https://scot13.tst.marttech.com.br/api/Livro/ListarDetalheLivro/' + livroId, {
         method: 'GET',
         headers: {

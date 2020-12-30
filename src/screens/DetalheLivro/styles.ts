@@ -22,16 +22,16 @@ padding: 16px;
 
 export const NomeLivro = styled.Text`
     font-weight: bold;
-    font-size: 24;
+    font-size: 24px;
     text-align: center;
-    margin-top: 16;
+    margin-top: 16px;
 `;
 
 export const AutorLivro = styled.Text`
     color: #aaa;
-    font-size: 16;
+    font-size: 16px;
     text-align: center;
-    margin-bottom: 10;
+    margin-bottom: 10px;
 `;
 
 export const ContainerDescricao = styled.View`
@@ -49,8 +49,7 @@ font-size: 18px;
     color: #aaa;
 `;
 
-export const BotaoFavorito = styled.TouchableOpacity`
-    background-color: #023E8A;
+const BotaoFavorito = styled.TouchableOpacity`
     height: 56px;
     justify-content: center;
     align-items: center;
@@ -58,8 +57,23 @@ export const BotaoFavorito = styled.TouchableOpacity`
     border-radius: 8px;
 `;
 
-export const TextoBotao = styled.Text`
+const TextoBotao = styled.Text`
     font-size: 16px;
-    color: #fff; 
     font-weight: bold; 
+`;
+
+export const BotaoFavoritar = styled(BotaoFavorito)`
+    background-color: #023E8A;
+`;
+
+export const BotaoDesfavoritar = styled(BotaoFavorito)`
+    background-color: #E6E6E6;
+`;
+
+export const TextoBotaoFavoritar = styled(TextoBotao)`
+    color: #fff;
+`;
+
+export const TextoBotaoDesfavoritar = styled(TextoBotao)`
+    color: #000;
 `;

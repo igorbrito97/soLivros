@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable curly */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
@@ -10,7 +11,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { BotaoIcone, Container, ContainerRow, NomeUsuario } from './styles';
 import { buscaLivros } from '../../services/Livro';
 import { useAuth } from '../../context/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { BuscarFavoritos } from '../../services/Favorito';
 
 export interface ListaLivrosDTO {
     id: number;
@@ -21,6 +23,7 @@ export interface ListaLivrosDTO {
 
 const ListaLivros = () => {
     const [bookList, setBookList] = useState<Array<ListaLivrosDTO>>([]);
+    const [favoriteList, setFavoriteList] = useState<Array<ListaLivrosDTO>>([]);
     const { token, signOut } = useAuth();
     const navigation = useNavigation();
 
@@ -38,6 +41,22 @@ const ListaLivros = () => {
         carregaLivros();
     }, []);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            let isActive = true;
+
+            const fetchFavorites = async () => {
+                const response = await BuscarFavoritos(token);
+                if (response.success) {
+                    setFavoriteList(response.data);
+                }
+                else ToastAndroid.show('Erro ao buscar favoritos!', ToastAndroid.SHORT);
+            };
+            fetchFavorites();
+            return () => { isActive = false; };
+        }, [])
+    );
+
     const signOutAlert = () => {
         Alert.alert(
             'Atençao!!',
@@ -54,6 +73,11 @@ const ListaLivros = () => {
                 },
             ],
         );
+    };
+
+    const isBookInFavorites = (id: number) => {
+        const book = favoriteList.find(item => item.id === id);
+        return !!book && book.id > 0 ? true : false;
     };
 
     return (
@@ -79,7 +103,7 @@ const ListaLivros = () => {
                     data={bookList}
                     numColumns={2}
                     renderItem={({ item }) => {
-                        return <Livro data={item} />;
+                        return <Livro data={item} isFavorite={isBookInFavorites(item.id)} />;
                     }}
                     keyExtractor={(_, index) => 'item' + index}
                 />
