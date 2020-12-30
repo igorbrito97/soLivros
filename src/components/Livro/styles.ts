@@ -19,5 +19,5 @@ export const LivroNome = styled.Text`
 
 export const LivroAutor = styled.Text`
     color: #aaa;
-    font-size: 14;
+    font-size: 14px;
 `;

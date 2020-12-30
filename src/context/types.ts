@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 export interface AuthContextDTO {
     signedIn: boolean;
-    user: UserInfoDTO | null; //User
-    token: string | null;
+    token: string;
     loading: boolean;
     signIn: (email: string, password: string) => void;
     signOut: () => void;

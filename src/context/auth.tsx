@@ -1,14 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, { createContext, useContext, useState } from 'react';
 import { loginAction, registerAction } from '../services/User';
-import { AuthContextDTO, RegisterUserDTO, UserInfoDTO, LoginDTO } from './types';
+import { AuthContextDTO, RegisterUserDTO, LoginDTO } from './types';
 
 const AuthContext = createContext<AuthContextDTO>({} as AuthContextDTO);
 
 export const AuthProvider: React.FC = ({ children }) => {
     const [signedIn, setSignedIn] = useState(false);
     const [token, setToken] = useState('');
-    const [user, setUser] = useState<UserInfoDTO | null>(null);
     const [loading, setLoading] = useState(false);
 
     const signIn = async (email: string, password: string) => {
@@ -26,7 +25,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         else {
             console.log('Deu ruim!!!!');
         }
-
+        setLoading(false);
     };
 
     const signOut = async () => {
@@ -59,7 +58,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         <AuthContext.Provider
             value={{
                 signedIn: signedIn,
-                user: user,
                 token: token,
                 loading: loading,
                 signIn,

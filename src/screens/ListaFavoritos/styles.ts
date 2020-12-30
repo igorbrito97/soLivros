@@ -2,24 +2,23 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-    background-color: #fff;
     flex: 1;
+    background-color: #fff;
     padding: 16px;
 `;
 
 export const ContainerRow = styled.View`
     flex-direction: row;
-`;
-
-export const NomeUsuario = styled.Text`
-    flex: 1;
-    font-size: 24px;
-`;
-
-export const BotaoIcone = styled.TouchableOpacity`
-    height: 42px;
-    width: 42px;
     align-items: center;
-    justify-content: center;
-    margin-left: 3px;
+    margin-bottom: 10px;
+`;
+
+export const UsuarioText = styled.Text`
+    font-size: 24px;
+    margin-left: 15px;
+`;
+
+export const FavoritoText = styled.Text`
+    font-size: 16px;
+    font-weight: bold;
 `;
