@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { createContext, useContext, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 import { loginAction, registerAction } from '../services/User';
 import { AuthContextDTO, RegisterUserDTO, LoginDTO } from './types';
 
@@ -17,13 +18,12 @@ export const AuthProvider: React.FC = ({ children }) => {
             senha: password,
         };
         const resp = await loginAction(data);
-        console.log('RESPLOGIN', resp);
         if (resp.success) {
             setSignedIn(true);
             setToken(resp.data.token);
         }
         else {
-            console.log('Deu ruim!!!!');
+            ToastAndroid.show('Erro ao fazer login!', ToastAndroid.LONG);
         }
         setLoading(false);
     };
@@ -41,14 +41,12 @@ export const AuthProvider: React.FC = ({ children }) => {
             senha: password,
         };
         const resp = await registerAction(data);
-        console.log('resp', resp);
         if (resp.data.success) {
-            console.log('Deu certo!');
             setSignedIn(true);
             setToken(resp.data.token);
         }
         else {
-            console.log('Deu ruim!');
+            ToastAndroid.show('Erro ao fazer cadastro!', ToastAndroid.LONG);
         }
         setLoading(false);
     };

@@ -12,9 +12,11 @@ import {
     LoginTextButton,
     Input,
     TitleText,
-    InputContainer,
+    ItensContainer,
     ImageContainer,
+    ContainerPassword,
 } from './styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 //igor@igor.com.br -> senha0101
 const Login: React.FC = () => {
@@ -30,7 +32,6 @@ const Login: React.FC = () => {
         else if (password.trim() === '')
             Alert.alert('Erro!!', 'Você deve digitar seu email!');
         else {
-            console.log('entrando');
             signIn(email, password);
         }
     };
@@ -39,30 +40,38 @@ const Login: React.FC = () => {
         navigation.navigate('Cadastro');
     };
 
-
     return (
         <Container>
             <ImageContainer>
                 <Image source={require('C:/Users/igor.brito/Documents/soLivros/src/assets/icon2.png')} />
                 <TitleText>SÓ LIVROS</TitleText>
             </ImageContainer>
-            <InputContainer>
+            <ItensContainer>
                 <Input
                     placeholder="Email...."
                     value={email}
-                    onChangeText={(value) => setEmail(value)} />
-                <Input
-                    placeholder="Senha..."
-                    value={password}
-                    onChangeText={(value) => setPassword(value)}
-                    secureTextEntry={!visiblePassword} />
+                    onChangeText={(value) => setEmail(value)}
+                />
+                <ContainerPassword>
+                    <Input
+                        placeholder="Senha..."
+                        value={password}
+                        onChangeText={(value) => setPassword(value)}
+                        secureTextEntry={!visiblePassword}
+                    />
+                    <Icon
+                        name={visiblePassword ? 'eye-slash' : 'eye'}
+                        size={24}
+                        onPress={() => setVisiblePassword(!visiblePassword)}
+                    />
+                </ContainerPassword>
                 <LoginButton onPress={handleLoginClick}>
                     <LoginTextButton>Login</LoginTextButton>
                 </LoginButton>
                 <SignUpButton onPress={handleSignUpClick}>
                     <SingUpTextButton>Cadastre-se</SingUpTextButton>
                 </SignUpButton>
-            </InputContainer>
+            </ItensContainer>
         </Container>
     );
 };

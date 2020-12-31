@@ -11,34 +11,38 @@ export const Container = styled.View`
 
 export const ImageContainer = styled.View`
     flex: 1;
-    width: 100%;
     align-items: center;
     margin-top: 40px;
-`;
-
-export const InputContainer = styled.View`
-    flex: 1;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
 `;
 
 export const TitleText = styled.Text`
     font-size: 45px;
     color: #023E8A;
-    font-weight: bold
+    font-weight: bold;
+`;
+
+export const ItensContainer = styled.View`
+    flex: 1;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
 `;
 
 export const Input = styled.TextInput`
     border-bottom-color: #023E8A;
     border-bottom-width: 3px;
-    width: 85%;
+    width: 80%;
     height: 46px;
     margin-top: 12px;
 `;
 
+export const ContainerPassword = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
 export const LoginButton = styled.TouchableOpacity`
-    width: 85%;
+    width: 90%;
     height: 56px;
     background-color: #023E8A;
     justify-content: center;
@@ -48,7 +52,7 @@ export const LoginButton = styled.TouchableOpacity`
 `;
 
 export const SignUpButton = styled.TouchableOpacity`
-    width: 85%;
+    width: 90%;
     height: 56px;
     background-color: #fff;
     justify-content: center;
@@ -58,7 +62,7 @@ export const SignUpButton = styled.TouchableOpacity`
 export const LoginTextButton = styled.Text`
     font-size: 16px;
     color: #fff;
-    font-weight: bold
+    font-weight: bold;
 `;
 
 export const SingUpTextButton = styled(LoginTextButton)`

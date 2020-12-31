@@ -63,10 +63,8 @@ const DetalheLivro = () => {
     }, [paramsIsFavorite]);
 
     const handleFavoriteClick = async () => {
-        console.log('handlinggggggggggggggg', isFavorite);
         if (isFavorite) {
             const response = await DesfavoritarLivro(livroId, token);
-            console.log('RESONSE', response);
             if (response.success) {
                 setIsFavorite(!isFavorite);
                 ToastAndroid.show('Livro desfavoritado com sucesso!', ToastAndroid.SHORT);
@@ -74,7 +72,6 @@ const DetalheLivro = () => {
         }
         else {
             const response = await FavoritarLivro(livroId, token);
-            console.log('RESONSE', response);
             if (response.success) {
                 setIsFavorite(!isFavorite);
                 ToastAndroid.show('Livro favoritado com sucesso!', ToastAndroid.SHORT);
@@ -83,7 +80,6 @@ const DetalheLivro = () => {
 
     };
 
-    //console.log('livro', livro);
     return (
         <>
             <StatusBar barStyle="dark-content" backgroundColor="#E7F5F8" />

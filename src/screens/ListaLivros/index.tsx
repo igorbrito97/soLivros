@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import Livro from '../../components/Livro';
 import { Alert, FlatList, StatusBar, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { BotaoIcone, Container, ContainerRow, NomeUsuario } from './styles';
+import { BotaoIcone, Container, ContainerRow, ContainerRowPesquisa, InputPesquisar, NomeUsuario } from './styles';
 import { buscaLivros } from '../../services/Livro';
 import { useAuth } from '../../context/auth';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -22,17 +22,20 @@ export interface ListaLivrosDTO {
 }
 
 const ListaLivros = () => {
-    const [bookList, setBookList] = useState<Array<ListaLivrosDTO>>([]);
-    const [favoriteList, setFavoriteList] = useState<Array<ListaLivrosDTO>>([]);
     const { token, signOut } = useAuth();
     const navigation = useNavigation();
+    const [bookList, setBookList] = useState<Array<ListaLivrosDTO>>([]);
+    const [fetchedBookList, setFetchedBookList] = useState<Array<ListaLivrosDTO>>([]);
+    const [favoriteList, setFavoriteList] = useState<Array<ListaLivrosDTO>>([]);
+    const [isSearching, setSearching] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
 
     useEffect(() => {
         const carregaLivros = async () => {
             const response = await buscaLivros(token);
             const json = await response.json();
-            console.log('json', json);
             if (json.success) {
+                setFetchedBookList(json.data);
                 setBookList(json.data);
             }
             else
@@ -80,24 +83,58 @@ const ListaLivros = () => {
         return !!book && book.id > 0 ? true : false;
     };
 
+    useEffect(() => {
+        isSearching ? setBookList([]) : setBookList(fetchedBookList);
+        setSearchInput('');
+    }, [isSearching]);
+
+    const buscarNaLista = (searchText: string) => {
+        if (searchText.trim() === '') {
+            setBookList([]);
+            return;
+        }
+        const array = fetchedBookList.filter(item => item.nome.includes(searchText));
+        setBookList(array);
+    };
+
     return (
         <>
             <StatusBar backgroundColor="#fff" barStyle="dark-content" />
             <Container>
-                <ContainerRow>
-                    <NomeUsuario>Olá, Renato</NomeUsuario>
-                    <ContainerRow>
-                        <BotaoIcone onPress={() => navigation.navigate('ListaFavoritos')}>
-                            <Icon name="heart" size={30} color="#000" />
-                        </BotaoIcone>
-                        <BotaoIcone>
-                            <Icon name="search" size={30} color="#000" />
-                        </BotaoIcone>
-                        <BotaoIcone onPress={() => signOutAlert()}>
-                            <Icon name="sign-out" size={35} color="#000" />
-                        </BotaoIcone>
-                    </ContainerRow>
-                </ContainerRow>
+                {
+                    isSearching ?
+                        <ContainerRowPesquisa>
+                            <BotaoIcone onPress={() => setSearching(false)}>
+                                <Icon name="arrow-left" size={24} color="#000" />
+                            </BotaoIcone>
+                            <InputPesquisar
+                                value={searchInput}
+                                onChangeText={(value) => {
+                                    setSearchInput(value);
+                                    buscarNaLista(value);
+                                }}
+                            />
+                            <BotaoIcone onPress={() => { }}>
+                                <Icon name="search" size={30} color="#000" />
+                            </BotaoIcone>
+                        </ContainerRowPesquisa>
+                        :
+                        <ContainerRow>
+                            <NomeUsuario>Olá, Renato</NomeUsuario>
+                            <ContainerRow>
+                                <BotaoIcone onPress={() => navigation.navigate('ListaFavoritos')}>
+                                    <Icon name="heart" size={30} color="#000" />
+                                </BotaoIcone>
+                                <BotaoIcone onPress={() => setSearching(true)}>
+                                    <Icon name="search" size={30} color="#000" />
+                                </BotaoIcone>
+                                <BotaoIcone onPress={() => signOutAlert()}>
+                                    <Icon name="sign-out" size={35} color="#000" />
+                                </BotaoIcone>
+                            </ContainerRow>
+                        </ContainerRow>
+                }
+
                 <FlatList
                     style={{ flex: 1 }}
                     data={bookList}

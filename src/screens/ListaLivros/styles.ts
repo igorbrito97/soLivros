@@ -23,3 +23,16 @@ export const BotaoIcone = styled.TouchableOpacity`
     justify-content: center;
     margin-left: 3px;
 `;
+
+export const ContainerRowPesquisa = styled.View`
+    flex-direction: row;
+    height: 45px;
+`;
+
+export const InputPesquisar = styled.TextInput`
+    border-bottom-width: 3px;
+    border-bottom-color: #023E8A;
+    margin-right: 10px;
+    margin-left: 10px;
+    flex: 1;
+`;
